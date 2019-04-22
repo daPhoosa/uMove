@@ -14,8 +14,21 @@
    class uMove
    {
       public:
-         uMove();
+         uMove( float maxVelocity, float acceleration );
          ~uMove();
+
+         void addMove( float position );
+         void addMove( float position, float timeSeconds );
+
+         bool moveComplete();
+
+         void startMoving();
+         void stopNow();
+
+         float getPostion();
+         float getMoveTime();
+
+         void setPosition( float position );
 
 
       private:
