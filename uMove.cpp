@@ -14,6 +14,12 @@ uMove::uMove( float maxVelocity, float acceleration )
    maxAccel = acceleration;
 
    invAccelHalf = 1.0f / ( 2.0f * maxAccel );
+
+   position = 0.0f;
+   velocity = 0.0f;
+   moveDistance = 0.0f;
+
+   moving = false;
 }
 
 
@@ -29,25 +35,53 @@ void uMove::addMove( float endPoint )
 
 void uMove::addMove( float endPoint, float feedRate )
 {
-   float dist = endPoint - position;
-   if( dist < 0.0f )
-   {
-      moveDirection = -1;
-      dist = -dist;
-   }
-   else
-   {
-      moveDirection = 1;
-   }
+   moveDistance = endPoint - position;
+   moveVel = min( feedRate, maxVel);
+
+   endPosition = endPoint;
+
+   moveDelta = 0.0f;
    
 
-   float distanceToVel = ( feedRate * feedRate ) * invAccelHalf;
+   
+}
 
-   if( distanceToVel + distanceToVel > dist )
+
+void uMove::startMoving()
+{
+   if( !moving && moveDistance > 0.001f )
    {
-      distanceToVel = dist * 0.5f;
+      lastPosTime = micros();
+      moving = true;
+   }      
+}
+
+
+
+float uMove::getPostion()
+{
+   if( moving )
+   {
+      uint32_t timeNow = micros();
+      deltaTime = (timeNow - lastPosTime) * 0.000001f; // convert microseconds to seconds
+      lastPosTime = timeNow;
+
+      if( moveDistance > 0.0f )  // positive move
+      {
+         float decelVel = min( sqrtf( 2.0f * (endPosition - position) * maxAccel ), moveVel );
+         velocity = min( velocity + maxAccel * deltaTime, decelVel );
+         position += velocity * deltaTime;
+         if( position > moveBuffer[currentBlockIndex].extrudeDist ) endFound = true;
+      }
+      else  // negative move
+      {
+         float decelVel = min( sqrtf( 2.0f * (position - endPosition) * maxAccel ), moveVel );
+         velocity = min( velocity + maxAccel * deltaTime, decelVel );
+         position -= velocity * deltaTime;
+         if( position < moveBuffer[currentBlockIndex].extrudeDist ) endFound = true;
+      }
    }
 
-   
+   return position;
 }
 

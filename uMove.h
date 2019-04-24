@@ -36,11 +36,15 @@
       private:
 
          float maxVel, maxAccel;
+         float endPosition, moveVel, moveDistance;
          float position, velocity;
 
          int moveDirection;
 
          uint32_t accelTime, velTime, decelTime, moveTime;
+         uint32_t lastPosTime;
+
+         bool moving;
 
 
    };
