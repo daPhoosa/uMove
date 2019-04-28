@@ -27,9 +27,10 @@
          void stopNow();
 
          float getPostion();
+         float getVelocity();
          float getMoveTime();
 
-         void setPosition( float position );
+         void setPosition( float x );
          void setLimits( float negativeLimit, float positiveLimit );
 
 
@@ -38,6 +39,8 @@
          float maxVel, maxAccel;
          float endPosition, moveVel, moveDistance;
          float position, velocity;
+
+         float minLimit, maxLimit;
 
          int moveDirection;
 
