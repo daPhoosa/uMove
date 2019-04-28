@@ -13,7 +13,9 @@ uMove::uMove( float maxVelocity, float acceleration )
    maxVel   = maxVelocity;
    maxAccel = acceleration;
 
-   //invAccelHalf = 1.0f / ( 2.0f * maxAccel );
+   invAccel = 1.0f / maxAccel;
+   invAccelHalf = invAccel * 0.5f;
+   distToMaxVel = maxVel * maxVel * invAccelHalf;
 
    position = 0.0f;
    velocity = 0.0f;
@@ -39,13 +41,37 @@ void uMove::addMove( float endPoint )
 
 void uMove::addMove( float endPoint, uint32_t timeMS )
 {
+   if( !moving )
+   {
+      float dist = abs( position - endPoint );
 
+      float t = float( timeMS ) * 0.001f;
+
+      float a = -invAccel;
+      float b = t;
+      float c = -dist;
+
+      float det = b*b - 4.0f * a * c;
+      float vel;
+
+      
+      if( det > 0 ) // destination is reached in time
+      {
+         vel = ( -b + sqrtf( det )) / (2.0f * a );
+      }
+      else  // insufficient time
+      {
+         vel = maxVel; // best effort
+      }
+
+      addMove( endPoint, vel );      
+   }
 }
 
 
 void uMove::addMove( float endPoint, float feedRate )
 {
-   if( !moving )
+   if( !moving && feedRate > 0.001f )
    {
       endPoint     = constrain( endPoint, minLimit, maxLimit );
       moveDistance = endPoint - position;
