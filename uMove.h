@@ -36,8 +36,7 @@
 
       private:
 
-         float maxVel, maxAccel, distToMaxVel;
-         float invAccel, invAccelHalf;
+         float maxVel, maxAccel, invAccel;
          float endPosition, moveVel, moveDistance;
          float position, velocity;
 

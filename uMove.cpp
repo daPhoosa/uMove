@@ -14,8 +14,6 @@ uMove::uMove( float maxVelocity, float acceleration )
    maxAccel = acceleration;
 
    invAccel = 1.0f / maxAccel;
-   invAccelHalf = invAccel * 0.5f;
-   distToMaxVel = maxVel * maxVel * invAccelHalf;
 
    position = 0.0f;
    velocity = 0.0f;
@@ -43,21 +41,17 @@ void uMove::addMove( float endPoint, uint32_t timeMS )
 {
    if( !moving )
    {
+      float vel;
+
       float dist = abs( position - endPoint );
 
       float t = float( timeMS ) * 0.001f;
 
-      float a = -invAccel;
-      float b = t;
-      float c = -dist;
+      float det = t * t - 4.0f * invAccel * dist;
 
-      float det = b*b - 4.0f * a * c;
-      float vel;
-
-      
       if( det > 0 ) // destination is reached in time
       {
-         vel = ( -b + sqrtf( det )) / (2.0f * a );
+         vel = ( -t + sqrtf( det )) / ( -2.0f * invAccel );
       }
       else  // insufficient time
       {
@@ -77,8 +71,7 @@ void uMove::addMove( float endPoint, float feedRate )
       moveDistance = endPoint - position;
       moveVel      = min( feedRate, maxVel);
       endPosition  = endPoint;
-   }
-      
+   } 
 }
 
 
