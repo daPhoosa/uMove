@@ -14,13 +14,13 @@ void addMove( float endPoint );                    // move to end point at max s
 void addMove( float endPoint, float feedRate );    // move to end point at desired speed
 void addMove( float endPoint, uint32_t timeMS );   // move to end point over desired time (will not exceed max velocity or acceleration if expected time is too small)
 
-bool moveComplete();
+bool moveComplete(); // returns true any time a move is not being executed
 
 void startMoving();  // added moves don't start until this is exectuted
 void stopNow();      // immediately decelerate to a stop
 
-float getPosition();
-float getVelocity();
+float getPosition(); // computes the expected position at this point in time.  Should be called frequently during at move to insure smooth movement.
+float getVelocity(); // returns the velocty computed at the last `getPosition()` call
 
 void setPosition( float x ); // set the current position
 
