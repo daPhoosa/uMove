@@ -43,11 +43,9 @@ void uMove::addMove( float endPoint, uint32_t timeMS )
    {
       float vel;
 
-      float dist = abs( position - endPoint );
-
       float t = float( timeMS ) * 0.001f;
 
-      float det = t * t - 4.0f * invAccel * dist;
+      float det = t * t - 4.0f * invAccel * abs( position - endPoint );
 
       if( det > 0 ) // destination is reached in time
       {
@@ -85,6 +83,20 @@ void uMove::startMoving()
 }
 
 
+void uMove::stopNow()
+{
+   float stopDist = velocity * velocity * invAccel * 0.5f; // distance to declerate to a stop
+   if( moveDistance > 0.0f )
+   {
+      endPosition = position + stopDist;
+   }
+   else
+   {
+      endPosition = position - stopDist;
+   }
+}
+
+
 bool uMove::moveComplete()
 {
    return !moving;
@@ -92,7 +104,7 @@ bool uMove::moveComplete()
 
 
 
-float uMove::getPostion()
+float uMove::getPosition()
 {
    if( moving )
    {
@@ -142,6 +154,23 @@ void uMove::setPosition( float x )
    if( !moving  )
    {
       position = x;
+
+      if( abs(moveDistance) > 0.001f )
+      {
+         moveDistance = endPosition - position; // recompute if a move is already queued, this should never happen...
+      }
    }      
+}
+
+
+void uMove::setMinLimit( float negativeLimit )
+{
+   minLimit = negativeLimit;
+}
+
+
+void uMove::setMaxLimit( float positiveLimit )
+{
+   maxLimit = positiveLimit;
 }
 

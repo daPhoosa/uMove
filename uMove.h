@@ -26,12 +26,13 @@
          void startMoving();
          void stopNow();
 
-         float getPostion();
+         float getPosition();
          float getVelocity();
-         float getMoveTime();
 
          void setPosition( float x );
-         void setLimits( float negativeLimit, float positiveLimit );
+
+         void setMinLimit( float negativeLimit );
+         void setMaxLimit( float positiveLimit );
 
 
       private:
@@ -41,8 +42,6 @@
          float position, velocity;
 
          float minLimit, maxLimit;
-
-         int moveDirection;
 
          uint32_t lastPosTime;
 
