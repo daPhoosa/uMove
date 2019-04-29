@@ -3,8 +3,9 @@ Simple one dimensional motion planner
 
 * Constant acceleration path planning for smooth moves
 * Single move queue
-* moves start and stop at zero velocity
+* Moves start and stop at zero velocity
 * Low memory and computational requirements
+* Multiple uMove objects can be used simultaneously for multi axis applications
 
 ## Functions
 ```
