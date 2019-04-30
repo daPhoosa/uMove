@@ -58,24 +58,27 @@ void setup()
 
 void loop() 
 {
+   // if-else priority scheme allows highest priority operations to have first opportunity to run
+   
    if( motorTick.check() )
    {
-      motor.step();
+      motor.step(); // send steps to motor controller
    }
    else if( updateMotor.check() )
    {
-      motor.setSpeedByPostionMM( motion.getPosition(), UPDATE_MOTOR_HZ );
+      motor.setSpeedByPostionMM( motion.getPosition(), UPDATE_MOTOR_HZ ); // get current expected position and pass it to the motor controller
    }
    else if( outputPosition.check() )
    {
-      Serial.print( motion.getPosition() ); Serial.print( "\t" );
+      // output motion control position and motor position to serial
+      Serial.print(  motion.getPosition() ); Serial.print( "\t" );
       Serial.println( motor.getPositionMM() );
    }
    else if( setTarget.check() )
    {
-      if( motion.moveComplete() )
+      if( motion.moveComplete() ) // check if previous move is complete
       {
-         motion.setMove( float(random(-100, 100)), uint32_t(random( 10, MAX_VEL)) );
+         motion.setMove( float(random(-100, 100)), float(random( 20, MAX_VEL)) ); // set new move with random position and speed
          motion.startMoving();
       }
    }
