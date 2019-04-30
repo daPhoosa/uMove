@@ -2,7 +2,6 @@
 Simple one dimensional motion planner
 
 * Constant acceleration path planning for smooth moves
-* Single move queue
 * Moves start and stop at zero velocity
 * Low memory and computational requirements
 * Multiple uMove objects can be used simultaneously for multi axis applications
@@ -11,9 +10,9 @@ Simple one dimensional motion planner
 ```
 uMove( float maxVelocity, float acceleration );
 
-void addMove( float endPoint );                    // move to end point at max speed
-void addMove( float endPoint, float feedRate );    // move to end point at desired speed
-void addMove( float endPoint, uint32_t timeMS );   // move to end point over desired time (will not exceed max velocity or acceleration if expected time is too small)
+void setMove( float endPoint );                    // move to end point at max speed
+void setMove( float endPoint, float feedRate );    // move to end point at desired speed
+void setMove( float endPoint, uint32_t timeMS );   // move to end point over desired time (will not exceed max velocity or acceleration if expected time is too small)
 
 bool moveComplete(); // returns true any time a move is not being executed
 
