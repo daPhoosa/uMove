@@ -3,7 +3,7 @@
  *       by Phillip Schmidt
  *    
  *    This example uses uMove to control a stepper motor's position.
- *    Once each move a complete, a new random 
+ *    Once each move is complete, a new random move is added
  * 
  *    The dStepper and PollTimer libraries must also be installed to your local Arduino libraries directory
  * 
