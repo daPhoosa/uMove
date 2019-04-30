@@ -31,13 +31,13 @@ uMove::~uMove()
 }
 
 
-void uMove::addMove( float endPoint )
+void uMove::setMove( float endPoint )
 {
-   addMove( endPoint, maxVel );
+   setMove( endPoint, maxVel );
 }
 
 
-void uMove::addMove( float endPoint, uint32_t timeMS )
+void uMove::setMove( float endPoint, uint32_t timeMS )
 {
    if( !moving )
    {
@@ -56,12 +56,12 @@ void uMove::addMove( float endPoint, uint32_t timeMS )
          vel = maxVel; // best effort
       }
 
-      addMove( endPoint, vel );      
+      setMove( endPoint, vel );      
    }
 }
 
 
-void uMove::addMove( float endPoint, float feedRate )
+void uMove::setMove( float endPoint, float feedRate )
 {
    if( !moving && feedRate > 0.001f )
    {
@@ -117,7 +117,7 @@ float uMove::getPosition()
          float decelVel = min( sqrtf( 2.0f * (endPosition - position) * maxAccel ), moveVel );
          velocity = min( velocity + maxAccel * deltaTime, decelVel );
          position += velocity * deltaTime;
-         if( position > endPosition ) 
+         if( endPosition - position < 0.001f ) 
          {
             position = endPosition;
             velocity = 0.0f;
@@ -130,7 +130,7 @@ float uMove::getPosition()
          float decelVel = min( sqrtf( 2.0f * (position - endPosition) * maxAccel ), moveVel );
          velocity = min( velocity + maxAccel * deltaTime, decelVel );
          position -= velocity * deltaTime;
-         if( position < endPosition )
+         if( position - endPosition < 0.001f )
          {
             position = endPosition;
             velocity = 0.0f;

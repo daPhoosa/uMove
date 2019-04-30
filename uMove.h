@@ -17,9 +17,9 @@
          uMove( float maxVelocity, float acceleration );
          ~uMove();
 
-         void addMove( float endPoint );
-         void addMove( float endPoint, float feedRate );
-         void addMove( float endPoint, uint32_t timeMS );
+         void setMove( float endPoint );
+         void setMove( float endPoint, float feedRate );
+         void setMove( float endPoint, uint32_t timeMS );
 
          bool moveComplete();
 
